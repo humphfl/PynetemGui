@@ -275,6 +275,7 @@ public class Link extends Line {
      */
     private void updateIfLists(){
         //TODO cette méthode doit être vérifiée par le controller
+        System.out.println("+++++ mise à jour des liens pour " + this.toString());
         start.getIfsMap().put(labStart.getText(), this);
         end.getIfsMap().put(labEnd.getText(), this);
 

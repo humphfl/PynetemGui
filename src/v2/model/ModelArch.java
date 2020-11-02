@@ -155,6 +155,7 @@ public class ModelArch implements APIModel {
      */
     @Override
     public String addIf(String termName) {
+        System.out.println("ARCH : add if : " + termName);
         Terminal t = getTermByName(termName);
 
         if (t != null) {
@@ -171,6 +172,7 @@ public class ModelArch implements APIModel {
      */
     @Override
     public String delIf(String termName) {
+        System.out.println("ARCH : del if : " + termName);
         Terminal t = getTermByName(termName);
 
         if (t != null) {

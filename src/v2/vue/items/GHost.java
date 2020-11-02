@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import v2.controller.APIController;
 import v2.vue.items.abstracts.AbstractItem;
 
 public class GHost extends AbstractItem {
@@ -21,8 +22,10 @@ public class GHost extends AbstractItem {
     //******************************************************************************************************************
     //*                          CONSTRUCTEUR                                                                          *
     //******************************************************************************************************************
-    public GHost(String name) {
-        super(name);
+    public GHost(String name, APIController ctrl) {
+        super(name, ctrl);
+        getController().createHost(name);
+
     }
 
 

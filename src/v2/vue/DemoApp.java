@@ -7,10 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import v2.controller.APIController;
+import v2.controller.Controller;
+import v2.model.ModelArch;
 import v2.vue.items.ConnectionManager;
 import v2.vue.items.GHost;
-import v2.vue.items.Link;
-import v2.vue.items.Multilink;
 
 public class DemoApp extends Application {
 
@@ -26,40 +27,41 @@ public class DemoApp extends Application {
         ConnectionManager manager = ConnectionManager.getInstance();
         manager.setGroup(root);
 
+        APIController ctrl = new Controller(new ModelArch());
 
 
         //Création du host 1
-        GHost hs1 = new GHost("Bureau");
+        GHost hs1 = new GHost("Bureau", ctrl);
         hs1.setX(0);
         hs1.setY(0);
 
         //création du host 2
-        GHost hs2 = new GHost("Gaming");
+        GHost hs2 = new GHost("Gaming", ctrl);
         hs2.setX(200);
         hs2.setY(100);
 
         //création du host 3
-        GHost hs3 = new GHost("Master_Race");
+        GHost hs3 = new GHost("Master_Race", ctrl);
         hs3.setX(100);
         hs3.setY(200);
 
         //création du lien entre les 2 hosts
-        Link ln1 = new Link(hs1, hs2, "eth0", "eth0", root);
-        Link ln2 = new Link(hs1, hs3, "eth1", "eth0", root);
+        //Link ln1 = new Link(hs1, hs2, "eth0", "eth0", root);
+        //Link ln2 = new Link(hs1, hs3, "eth1", "eth0", root);
 
-        Multilink mlk = new Multilink();
+        /*Multilink mlk = new Multilink();
         for (int i = 0; i < 3; i++) {
             mlk.addLink(new Link(hs2, hs3, "eth" + (i+1), "eth" + (i+1), root));
         }
 
         Link lk = mlk.getLinks().remove(0);
         lk.destroy();
-
+*/
         //root.setPadding(new Insets(20));
 
         root.getChildren().addAll(hs1, hs2, hs3);
-        ln1.toBack();
-        ln2.toBack();
+       /* ln1.toBack();
+        ln2.toBack();*/
 
 
         FlowPane fp = new FlowPane();
@@ -71,6 +73,7 @@ public class DemoApp extends Application {
         root.getChildren().add(manager);
 
 
+        System.out.println(ctrl.getAllConf());
       /*  Rectangle rect = new Rectangle();
         rect.setFill(Color.WHITE);
         rect.setHeight(100);
