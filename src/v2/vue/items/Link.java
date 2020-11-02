@@ -297,30 +297,13 @@ public class Link extends Line {
         }
     }
 
+
     /**
-     * Compare 2 liens. 2 liens sont identiques s'il relient les mêmes interfaces des mêmes équipements
-     * @param other : l'autre lien à comparer
-     * @return : <boolean>
+     * Methode toString surchargée
+     * @return <String>
      */
-    /*
-    public boolean isEqual(Link other){
-        if(other == null){
-            return false;
-        }
-        boolean hosts = (this.start == other.start || this.start == other.end)
-                && (this.end == other.start || this.end == other.end);
-        String t1S = this.labStart.getText();
-        String t1E = this.labEnd.getText();
-        String t2S = other.labStart.getText();
-        String t2E = other.labEnd.getText();
-        boolean ifs = (t1S.equals(t2S) || t1S.equals(t2E))
-                && (t1E.equals(t2S) || t1E.equals(t2E));
-
-        return hosts && ifs;
-    }*/
-
     public String toString(){
-        return String.format("[start:%s;stop:%s]", labStart.getText(), labEnd.getText()) + super.toString();
+        return String.format("[START:<%s.%s> ; STOP:<%s.%s>] ", start.getLblName().getText(), labStart.getText(),end.getLblName().getText(), labEnd.getText()) + super.toString();
     }
 
 }

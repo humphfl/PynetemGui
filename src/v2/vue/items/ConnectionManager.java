@@ -90,7 +90,7 @@ public class ConnectionManager extends Line {
     public void setOnConnect() {
         this.isOnConnect = true;
         this.setVisible(true);
-        System.out.println("OnConnect!!");
+        //System.out.println("OnConnect!!");
     }
 
     /**
@@ -99,7 +99,7 @@ public class ConnectionManager extends Line {
     public void setNotOnConnect() {
         this.isOnConnect = false;
         this.setVisible(false);
-        System.out.println("NotOnConnect");
+        //System.out.println("NotOnConnect");
     }
 
     /**

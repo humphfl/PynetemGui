@@ -225,17 +225,17 @@ public abstract class InterfacesTab {
         co.setCellValueFactory(param -> {
             Button btnCo = new Button("c");
             btnCo.setOnAction(event -> {
-                System.out.println("selected = " + param.getValue());
+                //System.out.println("selected = " + param.getValue());
                 ConnectionManager manager = ConnectionManager.getInstance();
                 if(!manager.isOnConnect()){
-                    System.out.println("startIf=" + param.getValue());
+                    //System.out.println("startIf=" + param.getValue());
                     manager.setOnConnect();
                     manager.setStart(host);
                     manager.setStartIfName(param.getValue());
                     actionsOnCo();
 
                 } else {
-                    System.out.println("EndIf=" + param.getValue());
+                    //System.out.println("EndIf=" + param.getValue());
                     manager.setEndIfName(param.getValue());
                     manager.mkLink(host);
                     manager.setNotOnConnect();

@@ -5,6 +5,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
 import javafx.event.Event;
 import javafx.geometry.Point2D;
@@ -13,6 +14,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import v2.vue.items.ContextMnu;
 import v2.vue.items.Link;
+
+enum ChangeEvent {
+    ADDIF,
+    DELIF,
+    LINKADD,
+    LINKDEL,
+    LINKCHANGE
+}
 
 /**
  * Item abstrait.
@@ -91,6 +100,36 @@ public abstract class AbstractItem extends Parent {
 
         // Ajout du listener sur le changement d'échelle de l'image pour garder le nom sous l'image (vertical)
         centerRef.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> updateLabel());
+
+        ifs.addListener(new MapChangeListener<String, Link>() {
+            @Override
+            public void onChanged(Change<? extends String, ? extends Link> change) {
+                System.out.println(String.format("-----------[key:%s ; added:%s ; removed:%s]-------------", change.getKey(), change.wasAdded(), change.wasRemoved()));
+                System.out.println("added:" + change.getValueAdded());
+                System.out.println("removed:" + change.getValueRemoved());
+                boolean added = change.wasAdded();
+                boolean removed = change.wasRemoved();
+                Link valueAdded = change.getValueAdded();
+                Link valueRemoved = change.getValueRemoved();
+                if (added && !removed && valueAdded == null) {
+                    onIfsChange(ChangeEvent.ADDIF, change.getKey());
+                }
+                if (!added && removed && valueRemoved == null) {
+                    onIfsChange(ChangeEvent.DELIF, change.getKey());
+                }
+                if (added && removed) {
+                    if (valueAdded == null && valueRemoved != null) {
+                        onIfsChange(ChangeEvent.LINKDEL, change.getKey());
+                    }
+                    if (valueRemoved == null && valueAdded != null) {
+                        onIfsChange(ChangeEvent.LINKADD, change.getKey());
+                    }
+                    /*if(valueRemoved != null && valueAdded !=null) {
+                        onIfsChange(ChangeEvent.LINKCHANGE, change.getKey());
+                    }*/
+                }
+            }
+        });
 
         this.getChildren().add(lblName);
 
@@ -184,13 +223,14 @@ public abstract class AbstractItem extends Parent {
 
     /**
      * Renvoie le premier lien entre cet élément et un autre passé en paramètre
+     *
      * @param other : l'autre élément
      * @return : <Link> ou null
      */
-    public Link getLink(AbstractItem other){
-        for(Link lk : this.getIfsMap().values()){
-            if(lk != null){
-                if(lk.getStart() == other || lk.getEnd() == other){
+    public Link getLink(AbstractItem other) {
+        for (Link lk : this.getIfsMap().values()) {
+            if (lk != null) {
+                if (lk.getStart() == other || lk.getEnd() == other) {
                     return lk;
                 }
             }
@@ -201,7 +241,6 @@ public abstract class AbstractItem extends Parent {
     //******************************************************************************************************************
     //*                          SETTERS METHODS                                                                       *
     //******************************************************************************************************************
-
 
 
     /**
@@ -258,14 +297,33 @@ public abstract class AbstractItem extends Parent {
     }
 
     /**
+     * Fonction qui intercepte tous les changements de la table des interfaces
+     * @param ev : type de changement
+     * @param index : entrée dans la table qui a changé
+     */
+    public void onIfsChange(ChangeEvent ev, String index) {
+        //TODO : c'est ici que l'on doit faire la mise à jour du modele
+        switch (ev) {
+            case ADDIF -> System.out.println("ADDIF : " + index);
+            case DELIF -> System.out.println("DELIF : " + index);
+            case LINKADD -> System.out.println("LINKADD : " + index);
+            case LINKCHANGE -> System.out.println("LINKCHANGE : " + index);
+            case LINKDEL -> System.out.println("LINKDEL : " + index);
+        }
+
+    }
+
+
+    /**
      * vérifie si un lien existe entre cette interface et une autre
+     *
      * @param other : l'autre itnerface
      * @return <boolean>
      */
-    public boolean isLinked(AbstractItem other){
-        for(Link lk : this.getIfsMap().values()){
-            if(lk != null){
-                if(lk.getStart() == other || lk.getEnd() == other){
+    public boolean isLinked(AbstractItem other) {
+        for (Link lk : this.getIfsMap().values()) {
+            if (lk != null) {
+                if (lk.getStart() == other || lk.getEnd() == other) {
                     return true;
                 }
             }
@@ -377,4 +435,5 @@ public abstract class AbstractItem extends Parent {
             }
         }
     }
+
 }
