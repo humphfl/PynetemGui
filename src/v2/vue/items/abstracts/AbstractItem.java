@@ -34,7 +34,7 @@ public abstract class AbstractItem extends Parent {
     //affichage/masquage de tous les labels
     private final BooleanProperty dispLabels = new SimpleBooleanProperty();
 
-    //Map des ifs (if ; otherHost.if)
+    //Map des ifs (if ; Link)
     private final ObservableMap<String, Link> ifs = FXCollections.observableHashMap();
 
     //variables pour le dragNdrop
@@ -173,10 +173,6 @@ public abstract class AbstractItem extends Parent {
         return this.ifs;
     }
 
-    //******************************************************************************************************************
-    //*                          SETTERS METHODS                                                                       *
-    //******************************************************************************************************************
-
     /**
      * Renvoie le label
      *
@@ -185,6 +181,28 @@ public abstract class AbstractItem extends Parent {
     public Label getLblName() {
         return this.lblName;
     }
+
+    /**
+     * Renvoie le premier lien entre cet élément et un autre passé en paramètre
+     * @param other : l'autre élément
+     * @return : <Link> ou null
+     */
+    public Link getLink(AbstractItem other){
+        for(Link lk : this.getIfsMap().values()){
+            if(lk != null){
+                if(lk.getStart() == other || lk.getEnd() == other){
+                    return lk;
+                }
+            }
+        }
+        return null;
+    }
+
+    //******************************************************************************************************************
+    //*                          SETTERS METHODS                                                                       *
+    //******************************************************************************************************************
+
+
 
     /**
      * Renvoie la propriétée qui définie l'affichage ou non des labels des interfaces
@@ -239,6 +257,21 @@ public abstract class AbstractItem extends Parent {
         //TODO : methode devant être soumise au controller
     }
 
+    /**
+     * vérifie si un lien existe entre cette interface et une autre
+     * @param other : l'autre itnerface
+     * @return <boolean>
+     */
+    public boolean isLinked(AbstractItem other){
+        for(Link lk : this.getIfsMap().values()){
+            if(lk != null){
+                if(lk.getStart() == other || lk.getEnd() == other){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     //******************************************************************************************************************
     //*                          PRIVATE METHODS                                                                       *

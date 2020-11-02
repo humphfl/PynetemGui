@@ -92,7 +92,13 @@ public class ContextMnu extends ContextMenu {
 
         // -- Item 3 : sous menu : liste des interfaces
         Menu ifListMenu = new Menu("Interfaces");
-        InterfacesTab ifLst = new InterfacesTab(anchor);
+        ContextMenu my = this;
+        InterfacesTab ifLst = new InterfacesTab(anchor) {
+            @Override
+            public void actionsOnCo() {
+                my.hide();
+            }
+        };
 
         ifListMenu.getItems().addAll(ifLst.getItems());
         //ajoute l'item au menu

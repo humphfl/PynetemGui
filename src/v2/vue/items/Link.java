@@ -25,6 +25,8 @@ public class Link extends Line {
     private final Group root;
     private Point2D offset = new Point2D(0, 0);
 
+    private Multilink group;
+
     //******************************************************************************************************************
     //*                          CONSTRUCTEUR                                                                          *
     //******************************************************************************************************************
@@ -168,6 +170,15 @@ public class Link extends Line {
         return this.dispLabEnd;
     }
 
+    /**
+     * Renvoie le groupe de multiliens dont ce lien est membre
+     * @return : <MultiLink>
+     */
+    public Multilink getGroup(){
+        return this.group;
+    }
+
+
     //******************************************************************************************************************
     //*                          SETTERS METHODS                                                                       *
     //******************************************************************************************************************
@@ -183,6 +194,13 @@ public class Link extends Line {
         update();
     }
 
+    /**
+     * défini si ce lien est membre d'un groupe de liens
+     * @param ml : le groupe
+     */
+    public void setMultiLink(Multilink ml){
+        this.group = ml;
+    }
 
     //******************************************************************************************************************
     //*                          PRIVATE METHODS                                                                       *
@@ -252,6 +270,9 @@ public class Link extends Line {
 
     }
 
+    /**
+     * Met à jour la table des interfaces sur chacun des cotés du lien
+     */
     private void updateIfLists(){
         //TODO cette méthode doit être vérifiée par le controller
         start.getIfsMap().put(labStart.getText(), this);
@@ -269,6 +290,37 @@ public class Link extends Line {
         removeToParent();
         start.getIfsMap().put(labStart.getText(), null);
         end.getIfsMap().put(labEnd.getText(), null);
+        if(this.group != null){
+            Multilink mlk = this.group;
+            this.group = null;
+            mlk.delLink(this);
+        }
+    }
+
+    /**
+     * Compare 2 liens. 2 liens sont identiques s'il relient les mêmes interfaces des mêmes équipements
+     * @param other : l'autre lien à comparer
+     * @return : <boolean>
+     */
+    /*
+    public boolean isEqual(Link other){
+        if(other == null){
+            return false;
+        }
+        boolean hosts = (this.start == other.start || this.start == other.end)
+                && (this.end == other.start || this.end == other.end);
+        String t1S = this.labStart.getText();
+        String t1E = this.labEnd.getText();
+        String t2S = other.labStart.getText();
+        String t2E = other.labEnd.getText();
+        boolean ifs = (t1S.equals(t2S) || t1S.equals(t2E))
+                && (t1E.equals(t2S) || t1E.equals(t2E));
+
+        return hosts && ifs;
+    }*/
+
+    public String toString(){
+        return String.format("[start:%s;stop:%s]", labStart.getText(), labEnd.getText()) + super.toString();
     }
 
 }

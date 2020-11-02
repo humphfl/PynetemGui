@@ -53,10 +53,15 @@ public class Multilink {
      * @param lk : <Link>
      */
     public void addLink(Link lk) {
-        this.lks.add(lk);
-        this.addListeners(lk);
+        //System.out.println("ADDLINK:" + lk);
+        //System.out.println("ok?" +this.lks.contains(lk));
+        if (!this.lks.contains(lk)) {//TODO methode contains appel quoi ?
+            this.lks.add(lk);
+            lk.setMultiLink(this);
+            this.addListeners(lk);
 
-        recalculateOffsets();
+            recalculateOffsets();
+        }
     }
 
     /**
@@ -72,6 +77,22 @@ public class Multilink {
         return lk;
     }
 
+    public void destroy() {
+        for (Link lk : this.lks) {
+            lk.destroy();
+        }
+        lks.clear();
+    }
+
+    public String toString(){
+        StringBuilder ret = new StringBuilder("MultiLink:[");
+        for(Link lk : this.lks){
+            ret.append(lk).append(";");
+        }
+        ret.append("]");
+        return ret.toString();
+
+    }
 
     //******************************************************************************************************************
     //*                          PRIVATE METHODS                                                                       *

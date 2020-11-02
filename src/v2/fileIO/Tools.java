@@ -1,64 +1,46 @@
 package v2.fileIO;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 /**
  * Linux ENAC :
  * Run configuration JavaFX : --module-path /usr/share/openjfx/lib --add-modules javafx.controls,javafx.fxml
  * Windows :
  * Run configuration JavaFX : --module-path  %JAVAFX_PATH% --add-modules javafx.controls,javafx.fxml
+ *
  * @author loiseafl
  * @version : 3.4
- *
+ * <p>
  * version hist :
- *
- * @3.4:
- * 		ajout du --module-path pour windows dans les commentaires en début de fichier
- *
- * @3.3:
- * 		ajout de la fonction writeLBN : écriture de lignes dans un nouveau fichier avec un BufferWriter
- * 		ajout de la fonction writeLBA : écriture de lignes dans un fichier en mode append avec un BufferWriter
- * 		ajout de la fonction convertArray qui transforme un objet collection en String[]
- *
- * 		ajout de CH_TOOLS_DEBUG et CH_TOOLS_INFO
- *
- * @3.2:
- * 		ajout de la gestion d'entiers aléatoires uniques dans la classe Singleton
- * 		+resetArray() : réinitialise la liste des nombres tirés
- * 		+genUniqueNB(): génère un entier aléatoire qui n'a pas déjà  été tiré
- * 		+setMinMax(int m, int M): fixe les bornes min et max pour le nombre aléatoire
- *
- * @3.1:
- * 		change LOG_LV_0 to CH_INFO
- * 		change LOG_LV_1 to CH_EVENTS_INFO
- * 		change LOG_LV_9 to CH_EVT_DEBUG
- * 		change LOG_LV_2 to CH_EVENTS_ERR_INFO
- *
+ * @3.4: ajout du --module-path pour windows dans les commentaires en début de fichier
+ * @3.3: ajout de la fonction writeLBN : écriture de lignes dans un nouveau fichier avec un BufferWriter
+ * ajout de la fonction writeLBA : écriture de lignes dans un fichier en mode append avec un BufferWriter
+ * ajout de la fonction convertArray qui transforme un objet collection en String[]
+ * <p>
+ * ajout de CH_TOOLS_DEBUG et CH_TOOLS_INFO
+ * @3.2: ajout de la gestion d'entiers aléatoires uniques dans la classe Singleton
+ * +resetArray() : réinitialise la liste des nombres tirés
+ * +genUniqueNB(): génère un entier aléatoire qui n'a pas déjà  été tiré
+ * +setMinMax(int m, int M): fixe les bornes min et max pour le nombre aléatoire
+ * @3.1: change LOG_LV_0 to CH_INFO
+ * change LOG_LV_1 to CH_EVENTS_INFO
+ * change LOG_LV_9 to CH_EVT_DEBUG
+ * change LOG_LV_2 to CH_EVENTS_ERR_INFO
  */
 public abstract class Tools {
 
-    /**######################################################################
+    /**
+     * ######################################################################
      * #               Log fcts												#
-     *#######################################################################*/
+     * #######################################################################
+     */
 
     public static boolean disp = true;
     public static boolean dispErr = true;
-    public static boolean lstChans[] = {true, true, true, true, true, true, true, true, true, true, true, true};
+    public static boolean[] lstChans = {true, true, true, true, true, true, true, true, true, true, true, true};
     //									0	  1		2	  3		4	  5		6	  7		8	  9		10	  11
 
     //chan explicit names TODO : changer les noms
@@ -93,12 +75,12 @@ public abstract class Tools {
     }
 
     /**
-     * @param txt texte à  écrire
+     * @param txt  texte à  écrire
      * @param chan "canal" de sortie
-     * (utile pour l'activation ou la désactivation de l'affichage de certains éléments)
+     *             (utile pour l'activation ou la désactivation de l'affichage de certains éléments)
      */
-    public static void log(Object txt,  int chan) {
-        chan = Math.abs(chan)%lstChans.length;
+    public static void log(Object txt, int chan) {
+        chan = Math.abs(chan) % lstChans.length;
 
         if (lstChans[chan])
             System.out.println(Tools.formatDouble(chan, 0, 2) + ")" + txt);
@@ -111,6 +93,7 @@ public abstract class Tools {
 
     /**
      * saisie d'une entrée au clavier
+     *
      * @param text : le texte à  afficher avant la saisie
      * @return
      */
@@ -129,6 +112,7 @@ public abstract class Tools {
 
     /**
      * sauvegarde d'un objet dans un fichier
+     *
      * @param nomFic
      * @param o
      */
@@ -144,7 +128,7 @@ public abstract class Tools {
             e1.printStackTrace();
             return;
         } catch (IOException e1) {
-            logErr("IO Exception : "+ nomFic);
+            logErr("IO Exception : " + nomFic);
             e1.printStackTrace();
             return;
         }
@@ -159,11 +143,12 @@ public abstract class Tools {
 
     /**
      * charge un objet à  partir d'un fichier (peut renvoyer null !)
+     *
      * @param nomFic
      * @return Object
      */
     @SuppressWarnings("null")
-    public static Object readObj(String nomFic){
+    public static Object readObj(String nomFic) {
         ObjectInputStream os;
         Object rt = null;
 
@@ -181,7 +166,7 @@ public abstract class Tools {
             logErr("Fichier non trouvé : " + nomFic);
             e.printStackTrace();
         } catch (IOException e) {
-            logErr("IO Exception : "+ nomFic);
+            logErr("IO Exception : " + nomFic);
             e.printStackTrace();
         }
         return rt;
@@ -194,6 +179,7 @@ public abstract class Tools {
 
     /**
      * lecture des lignes avec un BufferReader
+     *
      * @param nomFic
      * @return String[]
      */
@@ -212,12 +198,13 @@ public abstract class Tools {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return (String[])lst.toArray(new String[lst.size()]);
+        return lst.toArray(new String[lst.size()]);
     }
 
 
     /**
      * lecture des lignes avec un Scanner
+     *
      * @param nomFic
      * @return
      */
@@ -232,12 +219,13 @@ public abstract class Tools {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return (String[])lst.toArray(new String[lst.size()]);
+        return lst.toArray(new String[lst.size()]);
     }
 
 
     /**
      * lecture des lignes avec Files
+     *
      * @param nomFic
      * @return
      */
@@ -245,7 +233,7 @@ public abstract class Tools {
         String[] ret = {};
         try {
             List<String> allLines = Files.readAllLines(Paths.get(nomFic));
-            ret = (String[])allLines.toArray(new String[allLines.size()]);
+            ret = allLines.toArray(new String[allLines.size()]);
         } catch (IOException e) {
             logErr("fichier non trouvé !! " + nomFic);
             e.printStackTrace();
@@ -257,23 +245,22 @@ public abstract class Tools {
 
     /**
      * écriture des lignes dans un NOUVEAU fichier avec un BufferWriter
+     *
      * @param nomfichier
      * @param lines[]
      */
-    public static void writeLBN(String nomfichier, String lines[]) {
+    public static void writeLBN(String nomfichier, String[] lines) {
         BufferedWriter fw;
         try {
             fw = new BufferedWriter(new FileWriter(nomfichier));
-            if (lines.length > 0)
-            {
-                for (String s:lines)
-                {
+            if (lines.length > 0) {
+                for (String s : lines) {
                     fw.write(s);
                     fw.newLine();
                 }
             }
             fw.close();
-        } catch ( IOException e) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -282,29 +269,28 @@ public abstract class Tools {
 
     /**
      * écriture des lignes dans un fichier en mode ajout (append) avec un BufferWriter
+     *
      * @param nomfichier
      * @param lines[]
      */
-    public static void writeLBA(String nomfichier, String lines[]) {
-        try{
+    public static void writeLBA(String nomfichier, String[] lines) {
+        try {
 
-            File file =new File(nomfichier);
+            File file = new File(nomfichier);
 
             /* This logic is to create the file if the
              * file is not already present
              */
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.createNewFile();
             }
 
             //Here true is to append the content to file
-            FileWriter fw = new FileWriter(file,true);
+            FileWriter fw = new FileWriter(file, true);
             //BufferedWriter writer give better performance
             BufferedWriter bw = new BufferedWriter(fw);
-            if (lines.length > 0)
-            {
-                for (String s:lines)
-                {
+            if (lines.length > 0) {
+                for (String s : lines) {
                     bw.write(s);
                     bw.newLine();
                 }
@@ -313,7 +299,7 @@ public abstract class Tools {
             bw.close();
 
 
-        }catch(IOException ioe){
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
@@ -324,6 +310,7 @@ public abstract class Tools {
 
     /**
      * format 00h from int
+     *
      * @param i
      * @return
      */
@@ -334,36 +321,39 @@ public abstract class Tools {
 
     /**
      * renvoie un String du double entrée en paramètre avec s chiffres après la virgule
+     *
      * @param d
      * @param s
      * @return
      */
     public static String formatDouble(double d, int s) {
-        return String.format(("%." + s +"f"), d);
+        return String.format(("%." + s + "f"), d);
     }
+
     /**
      * renvoie un String du double entrée en paramètre avec <s> chiffres après la virgule
+     *
      * @param d
      * @param s : nombre de chiffres après la virgule
      * @param z : nombre de zeros à  completer sur la partie entière
      * @return
      */
     public static String formatDouble(double d, int s, int z) {
-        return String.format(("%0" + z + "." + s +"f"), d);
+        return String.format(("%0" + z + "." + s + "f"), d);
     }
-
 
 
     /**
      * transforme un objet collection en liste simple de String via le toString de chaque élément
+     *
      * @param lst
      * @return
      */
     @SuppressWarnings("rawtypes")
     public static String[] convertArray(Collection lst) {
-        if(lst.size() > 0) {
+        if (lst.size() > 0) {
             ArrayList<String> s = new ArrayList<String>();
-            for (Iterator iterator = lst.iterator(); iterator.hasNext();) {
+            for (Iterator iterator = lst.iterator(); iterator.hasNext(); ) {
                 s.add(iterator.next().toString());
             }
             return s.toArray(new String[s.size()]);
@@ -377,6 +367,7 @@ public abstract class Tools {
 
     /**
      * génère un nombre entier aléatoire (les bornes sont fixées par setMinMax)
+     *
      * @return
      */
     public static int genNB() {
@@ -385,6 +376,7 @@ public abstract class Tools {
 
     /**
      * saisie des valeurs min et max pour la génération aléatoire
+     *
      * @param min
      * @param max
      */
@@ -410,11 +402,10 @@ public abstract class Tools {
  * classe Singleton contenant un Scanner System.in pour les saisies clavier
  * ce scanner reste ouvert tout le temps d'execution du programme
  * le scanner est fermé lors du finalize();
- * @author loiseafl
  *
+ * @author loiseafl
  */
-class Singleton
-{
+class Singleton {
     // static variable single_instance of type Singleton
     private static Singleton single_instance = null;
 
@@ -426,10 +417,17 @@ class Singleton
     public int max = 50;
 
     // private constructor restricted to this class itself
-    private Singleton()
-    {
+    private Singleton() {
         sc = new Scanner(System.in);
         resetArray();
+    }
+
+    // static method to create instance of Singleton class
+    public static Singleton getInstance() {
+        if (single_instance == null)
+            single_instance = new Singleton();
+
+        return single_instance;
     }
 
     @Override
@@ -438,6 +436,7 @@ class Singleton
         single_instance = null;
         gen = null;
     }
+
     public void setMinMax(int m, int M) {
         this.min = m;
         this.max = M;
@@ -452,23 +451,16 @@ class Singleton
 
     /**
      * génère un nombre unique aléatoire compris entre min et max
+     *
      * @return
      */
     public int genUniqueNB() {
-        int r = (int)(Math.ceil(Math.random()*(max - min)) + min);
-        while(this.gen.contains(r) && gen.size() < (max - min)) {
-            r = (int)(Math.ceil(Math.random()*(max - min)) + min);
+        int r = (int) (Math.ceil(Math.random() * (max - min)) + min);
+        while (this.gen.contains(r) && gen.size() < (max - min)) {
+            r = (int) (Math.ceil(Math.random() * (max - min)) + min);
         }
         gen.add(r);
         Tools.log("genLST = -" + gen.toString() + "-" + " r=" + r, Tools.CH_TOOLS_DEBUG);
         return r;
-    }
-    // static method to create instance of Singleton class
-    public static Singleton getInstance()
-    {
-        if (single_instance == null)
-            single_instance = new Singleton();
-
-        return single_instance;
     }
 }

@@ -100,7 +100,7 @@ public class DemoApp extends Application {
                 //System.out.println(String.format("fpPos=[%03.1f;%03.1f]", event.getSceneX(), event.getSceneY()));
 
                 //System.out.println(String.format("gap=[V%03.1f;H%03.1f]", root.getTranslateX(), root.getTranslateY()));
-                System.out.println("gap="+root.getBoundsInLocal());
+                //System.out.println("gap="+root.getBoundsInLocal());
 
 
             }
