@@ -1,12 +1,9 @@
 package v2.vue;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import v2.controller.APIController;
@@ -60,12 +57,7 @@ public class DemoApp extends Application {
         sw1.setY(120);
 
         Button showRun = new Button("sh run");
-        showRun.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println(ctrl.getAllConf());
-            }
-        });
+        showRun.setOnAction(event -> System.out.println(ctrl.getAllConf()));
         showRun.setTranslateX(0);
         showRun.setTranslateY(0);
         //création du lien entre les 2 hosts
@@ -115,35 +107,20 @@ public class DemoApp extends Application {
 
         Scene scene = new Scene(fp, 900, 400);
 
-        fp.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        fp.setOnMouseMoved(event -> {
 
-                //TODO fix : mauvaise position pour le endX, endY (que sur le FlowPane)
-                manager.setEndX(event.getX()+root.getBoundsInLocal().getMinX());
-                manager.setEndY(event.getY()+root.getBoundsInLocal().getMinY());
-                manager.toBack();
-                //System.out.println(String.format("fpPos=[%03.1f;%03.1f]", event.getSceneX(), event.getSceneY()));
+            manager.setEndX(event.getX()+root.getBoundsInLocal().getMinX());
+            manager.setEndY(event.getY()+root.getBoundsInLocal().getMinY());
+            manager.toBack();
+            //System.out.println(String.format("fpPos=[%03.1f;%03.1f]", event.getSceneX(), event.getSceneY()));
 
-                //System.out.println(String.format("gap=[V%03.1f;H%03.1f]", root.getTranslateX(), root.getTranslateY()));
-                //System.out.println("gap="+root.getBoundsInLocal());
+            //System.out.println(String.format("gap=[V%03.1f;H%03.1f]", root.getTranslateX(), root.getTranslateY()));
+            //System.out.println("gap="+root.getBoundsInLocal());
 
 
-            }
         });
 
-        /*root.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
 
-                //TODO fix : mauvaise position pour le endX, endY (que sur le FlowPane)
-                System.out.println(String.format("RootPos=[%03.1f;%03.1f]", event.getSceneX(), event.getSceneY()));
-                //System.out.println(String.format("gap=[V%03.1f;H%03.1f]", root.getTranslateX(), root.getTranslateY()));
-                //System.out.println("gap="+root.getBoundsInParent());
-
-
-            }
-        });*/
 
         primaryStage.setTitle("JavaFX ImageView (o7planning.org)");
         primaryStage.setScene(scene);
@@ -151,6 +128,12 @@ public class DemoApp extends Application {
 
     }
 
-
+//TODO list :
+    /**
+     * menu contextuel pour ajouter des terminaux
+     * suppression d'un terminal (term menu contextuel)
+     * menu déroulant coté gauche :
+     *  - export la conf
+     */
 
 }
