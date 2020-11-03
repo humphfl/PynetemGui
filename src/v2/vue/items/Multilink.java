@@ -55,7 +55,7 @@ public class Multilink {
     public void addLink(Link lk) {
         //System.out.println("ADDLINK:" + lk);
         //System.out.println("ok?" +this.lks.contains(lk));
-        if (!this.lks.contains(lk)) {//TODO methode contains appel quoi ?
+        if (!this.lks.contains(lk)) {
             this.lks.add(lk);
             lk.setMultiLink(this);
             this.addListeners(lk);

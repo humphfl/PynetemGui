@@ -1,9 +1,11 @@
 package v2.vue;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -11,7 +13,9 @@ import v2.controller.APIController;
 import v2.controller.Controller;
 import v2.model.ModelArch;
 import v2.vue.items.ConnectionManager;
-import v2.vue.items.GHost;
+import v2.vue.items.equip.GHost;
+import v2.vue.items.equip.GRouter;
+import v2.vue.items.equip.GSwitch;
 
 public class DemoApp extends Application {
 
@@ -45,6 +49,25 @@ public class DemoApp extends Application {
         hs3.setX(100);
         hs3.setY(200);
 
+        //création du Router 1
+        GRouter r1 = new GRouter("Router1", ctrl);
+        r1.setX(400);
+        r1.setY(300);
+
+        //création du Switch 1
+        GSwitch sw1 = new GSwitch("sw1", ctrl);
+        sw1.setX(550);
+        sw1.setY(120);
+
+        Button showRun = new Button("sh run");
+        showRun.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println(ctrl.getAllConf());
+            }
+        });
+        showRun.setTranslateX(0);
+        showRun.setTranslateY(0);
         //création du lien entre les 2 hosts
         //Link ln1 = new Link(hs1, hs2, "eth0", "eth0", root);
         //Link ln2 = new Link(hs1, hs3, "eth1", "eth0", root);
@@ -59,7 +82,7 @@ public class DemoApp extends Application {
 */
         //root.setPadding(new Insets(20));
 
-        root.getChildren().addAll(hs1, hs2, hs3);
+        root.getChildren().addAll(hs1, hs2, hs3, r1, sw1, showRun);
        /* ln1.toBack();
         ln2.toBack();*/
 

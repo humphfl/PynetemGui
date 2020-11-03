@@ -13,7 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import v2.controller.APIController;
-import v2.vue.items.ContextMnu;
+import v2.vue.items.menu.ContextMnu;
 import v2.vue.items.Link;
 
 enum ChangeEvent {
@@ -105,43 +105,6 @@ public abstract class AbstractItem extends Parent {
 
         // Ajout du listener sur le changement d'échelle de l'image pour garder le nom sous l'image (vertical)
         centerRef.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> updateLabel());
-
-        AbstractItem my = this;
-        ifs.addListener(new MapChangeListener<String, Link>() {
-            @Override
-            public void onChanged(Change<? extends String, ? extends Link> change) {
-                System.out.println(String.format("-----------[key:%s ; added:%s ; removed:%s]-------------", change.getKey(), change.wasAdded(), change.wasRemoved()));
-                System.out.println("added:" + change.getValueAdded());
-                System.out.println("removed:" + change.getValueRemoved());
-                boolean added = change.wasAdded();
-                boolean removed = change.wasRemoved();
-                Link valueAdded = change.getValueAdded();
-                Link valueRemoved = change.getValueRemoved();
-                if (added && !removed && valueAdded == null) {
-                    onIfsChange(ChangeEvent.ADDIF, change.getKey(), null);
-                    //controller.addIf(lblName.getText());
-                }
-                if (!added && removed && valueRemoved == null) {
-                    onIfsChange(ChangeEvent.DELIF, change.getKey(), null);
-                    //controller.delIf(lblName.getText());
-                }
-                if (added && removed) {
-                    if (valueAdded == null && valueRemoved != null) {
-                        onIfsChange(ChangeEvent.LINKDEL, change.getKey(), valueRemoved);
-                        //controller.delLink(lblName.getText(), change.getKey());
-                    }
-                    if (valueRemoved == null && valueAdded != null) {
-                        onIfsChange(ChangeEvent.LINKADD, change.getKey(), valueAdded);
-                        Link k = valueAdded;
-
-                        //controller.createLink(k.getStart().getLblName().getText(), k.getLabs()[0].getText(), k.getEnd().getLblName().getText(), k.getLabs()[1].getText());
-                    }
-                    /*if(valueRemoved != null && valueAdded !=null) {
-                        onIfsChange(ChangeEvent.LINKCHANGE, change.getKey());
-                    }*/
-                }
-            }
-        });
 
         this.getChildren().add(lblName);
 
@@ -301,9 +264,8 @@ public abstract class AbstractItem extends Parent {
      * Ajoute une interface
      */
     public void addIf() {
-        System.out.println("AbstractItem : addIf");
+        //System.out.println("AbstractItem : addIf");
         this.ifs.put("eth" + this.ifs.keySet().size(), null);
-        //TODO : methode devant être soumise au controller
 
     }
 
@@ -311,53 +273,14 @@ public abstract class AbstractItem extends Parent {
      * Supprime une interface
      */
     public void delIf() {
-        System.out.println("AbstractItem : delIf");
+        //System.out.println("AbstractItem : delIf");
         Link lk = ifs.get("eth" + (ifs.keySet().size() - 1));
         if (lk != null) {
             //Si l'interface était reliée on supprime le lien
             lk.destroy();
         }
         this.ifs.remove("eth" + (ifs.keySet().size() - 1));
-        //TODO : methode devant être soumise au controller
     }
-
-    /**
-     * Fonction qui intercepte tous les changements de la table des interfaces
-     * @param ev : type de changement
-     * @param index : entrée dans la table qui a changé
-     */
-    public void onIfsChange(ChangeEvent ev, String index, Link changed) {
-        //TODO : c'est ici que l'on doit faire la mise à jour du modele
-        switch (ev) {
-            case ADDIF -> {
-                System.out.println("ADDIF : " + index);
-                System.out.println(controller.addIf(this.lblName.getText()));
-            }
-            case DELIF -> {
-                System.out.println("DELIF : " + index);
-                System.out.println(controller.delIf(this.lblName.getText()));
-            }
-            case LINKADD -> {
-                System.out.println("LINKADD : " + index);
-                String h1 = changed.getStart().getLblName().getText();
-                String f1 = changed.getLabs()[0].getText();
-                String h2 = changed.getEnd().getLblName().getText();
-                String f2 = changed.getLabs()[1].getText();
-
-                controller.createLink(h1, f1, h2, f2);
-            }
-            case LINKCHANGE -> System.out.println("LINKCHANGE : " + index);
-            case LINKDEL -> {
-                System.out.println("LINKDEL : " + index);
-                String h1 = changed.getStart().getLblName().getText();
-                String f1 = changed.getLabs()[0].getText();
-                controller.delLink(h1, f1);
-            }
-        }
-        System.out.println(controller.getAllConf());
-
-    }
-
 
     /**
      * vérifie si un lien existe entre cette interface et une autre
@@ -376,9 +299,52 @@ public abstract class AbstractItem extends Parent {
         return false;
     }
 
+    /**
+     * renomme le terminal
+     * @param newName : le nouveau nom à donner
+     */
+    public void rename(String newName){
+    //TODO : tester
+        this.lblName.setText(controller.rename(lblName.getText(), newName));
+    }
     //******************************************************************************************************************
     //*                          PRIVATE METHODS                                                                       *
     //******************************************************************************************************************
+
+    /**
+     * Fonction qui intercepte tous les changements de la table des interfaces
+     * @param ev : type de changement
+     * @param index : entrée dans la table qui a changé
+     */
+    private void onIfsChange(ChangeEvent ev, String index, Link changed) {
+        //TODO : c'est ici que l'on doit faire la mise à jour du modele
+        switch (ev) {
+            case ADDIF -> //System.out.println("ADDIF : " + index);
+                    //System.out.println(controller.addIf(this.lblName.getText()));
+                    controller.addIf(this.lblName.getText());
+            case DELIF -> //System.out.println("DELIF : " + index);
+                    //System.out.println(controller.delIf(this.lblName.getText()));
+                    controller.delIf(this.lblName.getText());
+            case LINKADD -> {
+                //System.out.println("LINKADD : " + index);
+                String h1 = changed.getStart().getLblName().getText();
+                String f1 = changed.getLabs()[0].getText();
+                String h2 = changed.getEnd().getLblName().getText();
+                String f2 = changed.getLabs()[1].getText();
+
+                controller.createLink(h1, f1, h2, f2);
+            }
+            case LINKCHANGE -> {}
+            case LINKDEL -> {
+                //System.out.println("LINKDEL : " + index);
+                String h1 = changed.getStart().getLblName().getText();
+                String f1 = changed.getLabs()[0].getText();
+                controller.delLink(h1, f1);
+            }
+        }
+        //System.out.println(controller.getAllConf());
+
+    }
 
     /**
      * Met en place les Listeners sur les différents Observables
@@ -390,7 +356,39 @@ public abstract class AbstractItem extends Parent {
         this.yPos.addListener((observable, oldValue, newValue) -> update());
 
         //Ajout du listener sur la map des interfaces
-        //this.ifs.addListener((MapChangeListener<String, Link>) change -> System.out.println(lblName.getText() + ":[[" + ifs + "]]"));
+        AbstractItem my = this;
+        ifs.addListener((MapChangeListener<String, Link>) change -> {
+            //System.out.println(String.format("-----------[key:%s ; added:%s ; removed:%s]-------------", change.getKey(), change.wasAdded(), change.wasRemoved()));
+            //System.out.println("added:" + change.getValueAdded());
+            //System.out.println("removed:" + change.getValueRemoved());
+            boolean added = change.wasAdded();
+            boolean removed = change.wasRemoved();
+            Link valueAdded = change.getValueAdded();
+            Link valueRemoved = change.getValueRemoved();
+            if (added && !removed && valueAdded == null) {
+                onIfsChange(ChangeEvent.ADDIF, change.getKey(), null);
+                //controller.addIf(lblName.getText());
+            }
+            if (!added && removed && valueRemoved == null) {
+                onIfsChange(ChangeEvent.DELIF, change.getKey(), null);
+                //controller.delIf(lblName.getText());
+            }
+            if (added && removed) {
+                if (valueAdded == null && valueRemoved != null) {
+                    onIfsChange(ChangeEvent.LINKDEL, change.getKey(), valueRemoved);
+                    //controller.delLink(lblName.getText(), change.getKey());
+                }
+                if (valueRemoved == null && valueAdded != null) {
+                    onIfsChange(ChangeEvent.LINKADD, change.getKey(), valueAdded);
+                    //Link k = valueAdded;
+
+                    //controller.createLink(k.getStart().getLblName().getText(), k.getLabs()[0].getText(), k.getEnd().getLblName().getText(), k.getLabs()[1].getText());
+                }
+                /*if(valueRemoved != null && valueAdded !=null) {
+                    onIfsChange(ChangeEvent.LINKCHANGE, change.getKey());
+                }*/
+            }
+        });
     }
 
     /**

@@ -1,9 +1,11 @@
-package v2.vue.items;
+package v2.vue.items.menu;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import v2.vue.items.abstracts.AbstractItem;
 
@@ -124,10 +126,28 @@ public class ContextMnu extends ContextMenu {
         this.getItems().add(checkItemcont);
 
 
+        // --- Item 6 : rename
+        TextField rn = new TextField(name.getValue());
+        CustomMenuItem csRn = new CustomMenuItem(rn);
+        csRn.setHideOnClick(false);
+        rn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                anchor.rename(rn.getText());
+            }
+        });
+
+        //ajoute l'item au menu
+        this.getItems().add(csRn);
+
+
+
+
+
         // --- crée l'action lors du click droit
         anchor.setOnContextMenuRequested(event -> {
             this.show(anchor, event.getScreenX(), event.getScreenY());
-            System.out.println("context!!");
+            //System.out.println("context!!");
         });
     }
 

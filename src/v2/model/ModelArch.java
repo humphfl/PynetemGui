@@ -155,7 +155,7 @@ public class ModelArch implements APIModel {
      */
     @Override
     public String addIf(String termName) {
-        System.out.println("ARCH : add if : " + termName);
+        //System.out.println("ARCH : add if : " + termName);
         Terminal t = getTermByName(termName);
 
         if (t != null) {
@@ -172,7 +172,7 @@ public class ModelArch implements APIModel {
      */
     @Override
     public String delIf(String termName) {
-        System.out.println("ARCH : del if : " + termName);
+        //System.out.println("ARCH : del if : " + termName);
         Terminal t = getTermByName(termName);
 
         if (t != null) {
@@ -224,6 +224,17 @@ public class ModelArch implements APIModel {
         }
         return "";
 
+    }
+
+    /**
+     * Renomme un terminal
+     *
+     * @param term    : le terminal à renommer
+     * @param newName : le nouveau nom
+     */
+    @Override
+    public void rename(String term, String newName) {
+        getTermByName(term).rename(newName);
     }
 
     /**

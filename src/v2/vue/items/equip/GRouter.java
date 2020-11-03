@@ -1,8 +1,6 @@
-package v2.vue.items;
+package v2.vue.items.equip;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -10,21 +8,23 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import v2.controller.APIController;
 import v2.vue.items.abstracts.AbstractItem;
+import v2.vue.items.abstracts.Pics;
 
-public class GHost extends AbstractItem {
+
+public class GRouter extends AbstractItem {
 
     //******************************************************************************************************************
     //*                          VARIABLES                                                                             *
     //******************************************************************************************************************
 
-    ImageView imageView;
+    private ImageView pic;
 
     //******************************************************************************************************************
     //*                          CONSTRUCTEUR                                                                          *
     //******************************************************************************************************************
-    public GHost(String name, APIController ctrl) {
+    public GRouter(String name, APIController ctrl) {
         super(name, ctrl);
-        getController().createHost(name);
+        getController().createRouter(name);
 
     }
 
@@ -40,23 +40,12 @@ public class GHost extends AbstractItem {
     @Override
     protected void createVisu() {
 
-        // Création de l'image :
-        String url = "/v2/vue/res/pc.png";
-        // The image is being loaded in the background
-        Image image = new Image(url, true);
-        imageView = new ImageView(image);
-        // Préserve le ration de l'image
-        imageView.setPreserveRatio(true);
+        pic = Pics.ROUTER.getImg();
 
-        // prend seulement une partie de l'image
-        Rectangle2D viewportRect = new Rectangle2D(0, 0, 59, 48);//Host ViewPort
-        imageView.setViewport(viewportRect);
-
-        //envoie de la référence du centre à la superclasse
-        setCenterRef(imageView);
+        setCenterRef(pic);
 
         //Ajout des éléments
-        this.getChildren().addAll(imageView);
+        this.getChildren().addAll(pic);
 
         //appel de la méthode de la classe super
         super.createVisu();

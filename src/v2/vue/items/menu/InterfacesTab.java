@@ -1,10 +1,12 @@
-package v2.vue.items;
+package v2.vue.items.menu;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.MapChangeListener;
 import javafx.scene.control.*;
+import v2.vue.items.ConnectionManager;
+import v2.vue.items.Link;
 import v2.vue.items.abstracts.AbstractItem;
 
 import java.util.ArrayList;
@@ -99,13 +101,15 @@ public abstract class InterfacesTab {
         TableColumn<String, CheckBox> if2Check = new TableColumn<>();
         TableColumn<String, String> if2name = new TableColumn<>();
         TableColumn<String, Button> co = new TableColumn<>();
+        TableColumn<String, Button> clear = new TableColumn<>();
         columnsMap.put("if1Check", if1Check);
         columnsMap.put("if2Check", if2Check);
         columnsMap.put("if2Name", if2name);
         columnsMap.put("if1Name", if1name);
         columnsMap.put("co", co);
+        columnsMap.put("clear", clear);
 
-        ifTable.getColumns().addAll(if1Check, if1name, if2Check, if2name, co);
+        ifTable.getColumns().addAll(if1Check, if1name, if2Check, if2name, co, clear);
 
 
         //Colonne 1 : checkBox de l'affichage ou non du label coté interfaces du host
@@ -246,6 +250,23 @@ public abstract class InterfacesTab {
             return new SimpleObjectProperty<>(btnCo);
         });
 
+        //Colonne 6 : boutons de supression du lien
+        clear.setCellValueFactory(param -> {
+            Link lk = host.getIfsMap().get(param.getValue());
+            if(lk != null) {
+                Button btnCo = new Button("del");
+                btnCo.setOnAction(event -> {
+                    //System.out.println("selected = " + param.getValue());
+
+                    //supression du lien
+                    lk.destroy();
+
+                });
+                return new SimpleObjectProperty<>(btnCo);
+            }
+            return null;
+        });
+
 
     }
 
@@ -269,7 +290,7 @@ public abstract class InterfacesTab {
     //*                          PUBLIC METHODS                                                                        *
     //******************************************************************************************************************
 
-    public void addInterface(String key, Link added) {
+   /* public void addInterface(String key, Link added) {
         System.out.println(this.host.getLblName().getText() + " : add action");
 
     }
@@ -277,6 +298,6 @@ public abstract class InterfacesTab {
     private void delInterface(String key, Link removed) {
         System.out.println(this.host.getLblName().getText() + " : del action");
 
-    }
+    }*/
 
 }

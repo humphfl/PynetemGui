@@ -110,7 +110,7 @@ public class Controller implements APIController {
     @Override
     public boolean delLink(String hostName, String ifName) {
 
-        return !model.disconnect(hostName, ifName).equals("");
+        return !model.disconnect(hostName, ifName.replace("eth", "if")).equals("");
     }
 
     /**
@@ -135,7 +135,7 @@ public class Controller implements APIController {
      */
     @Override
     public boolean delIf(String host) {
-        System.out.println("Controller : delIf :" + host);
+        //System.out.println("Controller : delIf :" + host);
         return !model.delIf(host).equals("");
     }
 
@@ -147,8 +147,39 @@ public class Controller implements APIController {
      */
     @Override
     public boolean addIf(String host) {
-        System.out.println("Controller : addIf :" + host);
+        //System.out.println("Controller : addIf :" + host);
         return !model.addIf(host).equals("");
+    }
+
+    /**
+     * Renomme le terminal
+     *
+     * @param term    : le terminal à renommer
+     * @param newName : le nouveau nom
+     * @return : le nouveau nom si le changement s'est fait correctement, l'ancien sinon
+     */
+    @Override
+    public String rename(String term, String newName) {
+        if(!model.exist(newName)){
+            model.rename(term, newName);
+            return newName;
+        }
+        return term;
+    }
+
+    /**
+     * Renvoie un nom préfixé et disponible
+     *
+     * @param prefix : le prefix à ajouter au nom
+     * @return : <String> : le nom
+     */
+    @Override
+    public String getName(String prefix) {
+        int index = 0;
+        while(model.exist(prefix+index)){
+            index++;
+        }
+        return prefix+index;
     }
 
     /**

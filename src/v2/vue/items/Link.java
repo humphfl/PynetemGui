@@ -274,8 +274,7 @@ public class Link extends Line {
      * Met à jour la table des interfaces sur chacun des cotés du lien
      */
     private void updateIfLists(){
-        //TODO cette méthode doit être vérifiée par le controller
-        System.out.println("+++++ mise à jour des liens pour " + this.toString());
+        //System.out.println("+++++ mise à jour des liens pour " + this.toString());
         start.getIfsMap().put(labStart.getText(), this);
         end.getIfsMap().put(labEnd.getText(), this);
 

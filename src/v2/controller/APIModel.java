@@ -122,6 +122,12 @@ public interface APIModel {
      */
     String disconnect(String term1, String if1);
 
+    /**
+     * Renomme un terminal
+     * @param term : le terminal à renommer
+     * @param newName : le nouveau nom
+     */
+    void rename(String term, String newName);
 
     //******************************************************************************************************************
     //*                          3] FONCTIONS D'ECOUTE                                                                 *
