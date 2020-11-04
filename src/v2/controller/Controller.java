@@ -168,6 +168,18 @@ public class Controller implements APIController {
     }
 
     /**
+     * Supprime un terminal passé en paramètre
+     *
+     * @param name : le nom du term
+     */
+    @Override
+    public void delTerm(String name) {
+        if(model.exist(name)){
+            model.delTerm(name);
+        }
+    }
+
+    /**
      * Renvoie un nom préfixé et disponible
      *
      * @param prefix : le prefix à ajouter au nom

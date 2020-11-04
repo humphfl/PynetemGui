@@ -136,9 +136,22 @@ public class ContextMnu extends ContextMenu {
                 anchor.rename(rn.getText());
             }
         });
-
         //ajoute l'item au menu
         this.getItems().add(csRn);
+
+        // --- Item 7 : delete item
+        Button del = new Button("supprimer");
+        CustomMenuItem csDel = new CustomMenuItem(del);
+        del.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                anchor.destroy();
+            }
+        });
+        //ajoute l'item au menu
+        this.getItems().add(csDel);
+
+
 
 
 

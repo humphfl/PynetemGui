@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public abstract class ConfRW {
 
-    public static String createConf(ArrayList<Terminal> terms){
+    public static String createConf(ArrayList<Terminal> terms) {
         String starter = "[config]\n" +
                 "image_dir = images\n" +
                 "config_dir = configs\n";
@@ -22,25 +22,22 @@ public abstract class ConfRW {
 
         String finalStr = "";
 
-        for (Terminal t : terms){
+        for (Terminal t : terms) {
 
-            if(t.getType().isNode()){
+            if (t.getType().isNode()) {
                 nodes += t.printConf() + "\n";
             }
-            if(t.getType().isSwitch()){
+            if (t.getType().isSwitch()) {
                 switches += t.printConf();
             }
-            if(t.getType().isBridge()){
+            if (t.getType().isBridge()) {
                 bridges += t.printConf() + "\n";
             }
-
-            finalStr = starter +
-                    enNode + nodes +
-                    enSwitches + switches +
-                    enBridges + bridges;
-
-
         }
+        finalStr = starter +
+                enNode + nodes +
+                enSwitches + switches +
+                enBridges + bridges;
 
         return finalStr;
     }

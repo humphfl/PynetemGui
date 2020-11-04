@@ -87,6 +87,12 @@ public interface APIController {
      */
     String rename(String term, String newName);
 
+    /**
+     * Supprime un terminal passé en paramètre
+     * @param name : le nom du term
+     */
+    void delTerm(String name);
+
     //******************************************************************************************************************
     //*                          3] FONCTIONS DIVERS                                                                   *
     //******************************************************************************************************************

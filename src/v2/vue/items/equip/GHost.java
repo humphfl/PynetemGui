@@ -1,5 +1,6 @@
 package v2.vue.items.equip;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -22,8 +23,8 @@ public class GHost extends AbstractItem {
     //******************************************************************************************************************
     //*                          CONSTRUCTEUR                                                                          *
     //******************************************************************************************************************
-    public GHost(String name, APIController ctrl) {
-        super(name, ctrl);
+    public GHost(String name, Group rt, APIController ctrl) {
+        super(name, rt, ctrl);
         getController().createHost(name);
 
     }

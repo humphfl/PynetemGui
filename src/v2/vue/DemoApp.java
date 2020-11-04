@@ -32,27 +32,27 @@ public class DemoApp extends Application {
 
 
         //Création du host 1
-        GHost hs1 = new GHost("Bureau", ctrl);
+        GHost hs1 = new GHost("Bureau", root, ctrl);
         hs1.setX(0);
         hs1.setY(0);
 
         //création du host 2
-        GHost hs2 = new GHost("Gaming", ctrl);
+        GHost hs2 = new GHost("Gaming", root, ctrl);
         hs2.setX(200);
         hs2.setY(100);
 
         //création du host 3
-        GHost hs3 = new GHost("Master_Race", ctrl);
+        GHost hs3 = new GHost("Master_Race", root, ctrl);
         hs3.setX(100);
         hs3.setY(200);
 
         //création du Router 1
-        GRouter r1 = new GRouter("Router1", ctrl);
+        GRouter r1 = new GRouter("Router1", root, ctrl);
         r1.setX(400);
         r1.setY(300);
 
         //création du Switch 1
-        GSwitch sw1 = new GSwitch("sw1", ctrl);
+        GSwitch sw1 = new GSwitch("sw1", root, ctrl);
         sw1.setX(550);
         sw1.setY(120);
 
@@ -74,7 +74,7 @@ public class DemoApp extends Application {
 */
         //root.setPadding(new Insets(20));
 
-        root.getChildren().addAll(hs1, hs2, hs3, r1, sw1, showRun);
+        root.getChildren().addAll(showRun);
        /* ln1.toBack();
         ln2.toBack();*/
 
@@ -109,8 +109,8 @@ public class DemoApp extends Application {
 
         fp.setOnMouseMoved(event -> {
 
-            manager.setEndX(event.getX()+root.getBoundsInLocal().getMinX());
-            manager.setEndY(event.getY()+root.getBoundsInLocal().getMinY());
+            manager.setEndX(event.getX() + root.getBoundsInLocal().getMinX());
+            manager.setEndY(event.getY() + root.getBoundsInLocal().getMinY());
             manager.toBack();
             //System.out.println(String.format("fpPos=[%03.1f;%03.1f]", event.getSceneX(), event.getSceneY()));
 
@@ -119,7 +119,6 @@ public class DemoApp extends Application {
 
 
         });
-
 
 
         primaryStage.setTitle("JavaFX ImageView (o7planning.org)");

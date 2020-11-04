@@ -1,5 +1,6 @@
 package v2.vue.items.equip;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -22,8 +23,8 @@ public class GSwitch extends AbstractItem {
     //******************************************************************************************************************
     //*                          CONSTRUCTEUR                                                                          *
     //******************************************************************************************************************
-    public GSwitch(String name, APIController ctrl) {
-        super(name, ctrl);
+    public GSwitch(String name, Group rt, APIController ctrl) {
+        super(name, rt, ctrl);
         getController().createSwitch(name);
 
     }

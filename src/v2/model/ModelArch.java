@@ -50,20 +50,23 @@ public class ModelArch implements APIModel {
                 .orElse(null);
     }
 
-    /**
-     * Supprime un <Terminal>
-     * @param name : le nom du terminal
-     */
-    private void delTerm(String name){
-        Terminal t = getTermByName(name);
-        t.destroy();
-        this.arch.remove(t);
-    }
+
 
 
     //******************************************************************************************************************
     //*                          Implementations de APIModel                                                           *
     //******************************************************************************************************************
+
+    /**
+     * Supprime un <Terminal>
+     * @param name : le nom du terminal
+     */
+    @Override
+    public void delTerm(String name){
+        Terminal t = getTermByName(name);
+        t.destroy();
+        this.arch.remove(t);
+    }
 
     /**
      * Ajoute un <Router> à l'architecture

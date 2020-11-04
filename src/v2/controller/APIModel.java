@@ -8,6 +8,11 @@ public interface APIModel {
     //*                          1] FONCTIONS D'AJOUT/SUPPRESSION DE TERMINAUX                                         *
     //******************************************************************************************************************
 
+    /**
+     * Supprime un <Terminal>
+     * @param name : le nom du terminal
+     */
+    void delTerm(String name);
 
     //+------------------------------------------------------+
     //|      ROUTER                                          |

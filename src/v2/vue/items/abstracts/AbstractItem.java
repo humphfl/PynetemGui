@@ -9,12 +9,13 @@ import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
 import javafx.event.Event;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import v2.controller.APIController;
-import v2.vue.items.menu.ContextMnu;
 import v2.vue.items.Link;
+import v2.vue.items.menu.ContextMnu;
 
 enum ChangeEvent {
     ADDIF,
@@ -34,6 +35,8 @@ public abstract class AbstractItem extends Parent {
     //*                          VARIABLES                                                                             *
     //******************************************************************************************************************
 
+    //Le panel conteneur de cet élément
+    private final Group root;
     //Nom de l'item
     private final Label lblName;
 
@@ -46,23 +49,22 @@ public abstract class AbstractItem extends Parent {
 
     //Map des ifs (if ; Link)
     private final ObservableMap<String, Link> ifs = FXCollections.observableHashMap();
-
+    //Controller
+    private final APIController controller;
     //variables pour le dragNdrop
     double initX, initY;
     private Node centerRef;
     private Point2D dragAnchor = new Point2D(0f, 0f);
-
-    //Controller
-    private final APIController controller;
 
     //******************************************************************************************************************
     //*                          CONSTRUCTEUR                                                                          *
     //******************************************************************************************************************
 
 
-    public AbstractItem(String name, APIController controller) {
+    public AbstractItem(String name, Group rt, APIController controller) {
         super();
 
+        this.root = rt;
         this.lblName = new Label(name);
         this.controller = controller;
 
@@ -77,6 +79,8 @@ public abstract class AbstractItem extends Parent {
 
         //Mise en place du menu contextuel
         setContextMenu();
+
+        root.getChildren().add(this);
 
     }
 
@@ -215,15 +219,17 @@ public abstract class AbstractItem extends Parent {
 
     /**
      * Renvoie le controller
+     *
      * @return : <APIController>
      */
-    public APIController getController(){
+    public APIController getController() {
         return this.controller;
     }
 
-    public String getName(){
+    public String getName() {
         return this.lblName.getText();
     }
+
     //******************************************************************************************************************
     //*                          SETTERS METHODS                                                                       *
     //******************************************************************************************************************
@@ -259,6 +265,22 @@ public abstract class AbstractItem extends Parent {
     //******************************************************************************************************************
     //*                          PUBLIC METHODS                                                                        *
     //******************************************************************************************************************
+
+    /**
+     * supprime le terminal
+     */
+    public void destroy() {
+        for (Link k : ifs.values()) {
+            if (k != null) {
+                k.destroy();
+            }
+        }
+        controller.delTerm(getName());
+        if(root.getChildren().contains(this)){
+            root.getChildren().remove(this);
+        }
+
+    }
 
     /**
      * Ajoute une interface
@@ -301,10 +323,11 @@ public abstract class AbstractItem extends Parent {
 
     /**
      * renomme le terminal
+     *
      * @param newName : le nouveau nom à donner
      */
-    public void rename(String newName){
-    //TODO : tester
+    public void rename(String newName) {
+        //TODO : tester
         this.lblName.setText(controller.rename(lblName.getText(), newName));
     }
     //******************************************************************************************************************
@@ -313,7 +336,8 @@ public abstract class AbstractItem extends Parent {
 
     /**
      * Fonction qui intercepte tous les changements de la table des interfaces
-     * @param ev : type de changement
+     *
+     * @param ev    : type de changement
      * @param index : entrée dans la table qui a changé
      */
     private void onIfsChange(ChangeEvent ev, String index, Link changed) {
@@ -334,7 +358,8 @@ public abstract class AbstractItem extends Parent {
 
                 controller.createLink(h1, f1, h2, f2);
             }
-            case LINKCHANGE -> {}
+            case LINKCHANGE -> {
+            }
             case LINKDEL -> {
                 //System.out.println("LINKDEL : " + index);
                 String h1 = changed.getStart().getLblName().getText();
