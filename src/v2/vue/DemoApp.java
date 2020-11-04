@@ -3,16 +3,13 @@ package v2.vue;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import v2.controller.APIController;
 import v2.controller.Controller;
 import v2.model.ModelArch;
 import v2.vue.items.ConnectionManager;
-import v2.vue.items.equip.GHost;
-import v2.vue.items.equip.GRouter;
-import v2.vue.items.equip.GSwitch;
+import v2.vue.items.menu.GlobalContextMenu;
 
 public class DemoApp extends Application {
 
@@ -24,14 +21,20 @@ public class DemoApp extends Application {
     public void start(Stage primaryStage) {
 
 
+        //création du group ed'acceuil des éléments
         Group root = new Group();
+
+        //ajout du groupe au connexion manager
         ConnectionManager manager = ConnectionManager.getInstance();
         manager.setGroup(root);
 
+        //affichage du manager de co
+        root.getChildren().add(manager);
+
+        //création du controller et du modèle
         APIController ctrl = new Controller(new ModelArch());
 
-
-        //Création du host 1
+       /* //Création du host 1
         GHost hs1 = new GHost("Bureau", root, ctrl);
         hs1.setX(0);
         hs1.setY(0);
@@ -54,73 +57,38 @@ public class DemoApp extends Application {
         //création du Switch 1
         GSwitch sw1 = new GSwitch("sw1", root, ctrl);
         sw1.setX(550);
-        sw1.setY(120);
+        sw1.setY(120);*/
 
-        Button showRun = new Button("sh run");
+        //Création d'un bouton d'affichage de la conf
+       /* Button showRun = new Button("sh run");
         showRun.setOnAction(event -> System.out.println(ctrl.getAllConf()));
         showRun.setTranslateX(0);
         showRun.setTranslateY(0);
-        //création du lien entre les 2 hosts
-        //Link ln1 = new Link(hs1, hs2, "eth0", "eth0", root);
-        //Link ln2 = new Link(hs1, hs3, "eth1", "eth0", root);
-
-        /*Multilink mlk = new Multilink();
-        for (int i = 0; i < 3; i++) {
-            mlk.addLink(new Link(hs2, hs3, "eth" + (i+1), "eth" + (i+1), root));
-        }
-
-        Link lk = mlk.getLinks().remove(0);
-        lk.destroy();
-*/
-        //root.setPadding(new Insets(20));
-
-        root.getChildren().addAll(showRun);
-       /* ln1.toBack();
-        ln2.toBack();*/
+        root.getChildren().addAll(showRun);*/
 
 
+        //Création d'un flowPaner recevant le groupe
         FlowPane fp = new FlowPane();
-
-
         fp.getChildren().add(root);
 
 
-        root.getChildren().add(manager);
 
-
-        System.out.println(ctrl.getAllConf());
-      /*  Rectangle rect = new Rectangle();
-        rect.setFill(Color.WHITE);
-        rect.setHeight(100);
-        rect.setWidth(100);
-        root.getChildren().add(rect);
-        root.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
-            @Override
-            public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
-                rect.setHeight(root.getBoundsInLocal().getHeight());
-                rect.setWidth(root.getBoundsInLocal().getWidth());
-                System.out.println("boundModif" + root.getBoundsInLocal().getWidth());
-                rect.toBack();
-            }
-        });
-        rect.setVisible(true);*/
-
-        Scene scene = new Scene(fp, 900, 400);
-
+        //le manager suit en permanence la position de la souris
         fp.setOnMouseMoved(event -> {
 
             manager.setEndX(event.getX() + root.getBoundsInLocal().getMinX());
             manager.setEndY(event.getY() + root.getBoundsInLocal().getMinY());
             manager.toBack();
-            //System.out.println(String.format("fpPos=[%03.1f;%03.1f]", event.getSceneX(), event.getSceneY()));
-
-            //System.out.println(String.format("gap=[V%03.1f;H%03.1f]", root.getTranslateX(), root.getTranslateY()));
-            //System.out.println("gap="+root.getBoundsInLocal());
 
 
         });
 
+        GlobalContextMenu gcMenu = new GlobalContextMenu(root, fp, ctrl);
 
+
+
+        //Création de la scène principale
+        Scene scene = new Scene(fp, 900, 400);
         primaryStage.setTitle("JavaFX ImageView (o7planning.org)");
         primaryStage.setScene(scene);
         primaryStage.show();

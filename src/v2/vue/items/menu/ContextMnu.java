@@ -30,6 +30,7 @@ public class ContextMnu extends ContextMenu {
      * Create a new ContextMenu
      */
     public ContextMnu(AbstractItem anchor, String name) {
+        super();
         this.anchor = anchor;
         setContextMenu();
         this.name.setValue(name);
@@ -81,12 +82,9 @@ public class ContextMnu extends ContextMenu {
         MenuItem itName = new MenuItem(name.getValue());
         name.addListener((observable, oldValue, newValue) -> itName.setText(name.getValue()));
         itName.setDisable(true);//désactive l'item
-
-        //ajoute les actions de l'item
-        itName.setOnAction(event -> System.out.println("clik item 1"));
-
         //ajoute l'item au menu
         this.getItems().add(itName);
+
 
         // --- Item 2 : Separator
         this.getItems().add(new SeparatorMenuItem());
@@ -152,14 +150,10 @@ public class ContextMnu extends ContextMenu {
         this.getItems().add(csDel);
 
 
-
-
-
-
-
         // --- crée l'action lors du click droit
         anchor.setOnContextMenuRequested(event -> {
             this.show(anchor, event.getScreenX(), event.getScreenY());
+            event.consume();
             //System.out.println("context!!");
         });
     }

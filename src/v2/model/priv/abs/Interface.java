@@ -17,7 +17,7 @@ public class Interface implements Connect {
     private final Terminal parentTerm;
 
     /* nom de l'interface */
-    private final String name;
+    private String name;
 
     /* numéro de l'interface */
     private final int index;
@@ -57,8 +57,13 @@ public class Interface implements Connect {
     public ObjectProperty<Connect> getIfaceLinkProperty() {
         return this.ifaceLink;
     }
+    //******************************************************************
+    //*  SETTERS                                                       *
+    //******************************************************************
 
-
+    public void setName(String name){
+        this.name = name;
+    }
     //******************************************************************
     //*  PUBLIC METHODS                                                *
     //******************************************************************

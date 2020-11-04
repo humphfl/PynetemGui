@@ -1,5 +1,7 @@
 package v2.model.priv;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import v2.model.priv.abs.Connect;
@@ -70,6 +72,12 @@ public class Switch extends Terminal {
                 return mainIf;
             }
         };
+        getNameProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                mainIf.setName(getNameProperty().getValue());
+            }
+        });
     }
 
     /**
