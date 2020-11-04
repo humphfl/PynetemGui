@@ -135,7 +135,7 @@ public class GlobalContextMenu extends ContextMenu {
             pos = new Point2D(event.getX() + itemsRoot.getBoundsInLocal().getMinX()
                     , event.getY() + itemsRoot.getBoundsInLocal().getMinY()
             );
-            System.out.println(pos);
+            //System.out.println(pos);
             event.consume();
             //System.out.println("context!!");
         });
