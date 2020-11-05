@@ -1,4 +1,4 @@
-package v2.vue;
+package v2.vue.entrypoint;
 
 import javafx.application.Application;
 import javafx.scene.Group;
