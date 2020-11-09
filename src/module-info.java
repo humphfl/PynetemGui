@@ -6,6 +6,7 @@ module PynetemGui {
     requires javafx.media;
     requires javafx.swing;
     requires javafx.web;
-
     exports v2.vue.entrypoint;
+
+
 }

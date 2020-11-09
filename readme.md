@@ -6,3 +6,5 @@ sources dans v2
 
 launcher dans vue.entrypoint.DemoApp.java
 
+script de déploiement : https://github.com/dlemmermann/JPackageScriptFX/blob/master/jpackagefx-main/build_app.bat
+

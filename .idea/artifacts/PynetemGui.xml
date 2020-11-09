@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="PynetemGui">
+    <output-path>$PROJECT_DIR$/out/artifacts/PynetemGui</output-path>
+    <root id="root">
+      <element id="archive" name="PynetemGui.jar">
+        <element id="module-output" name="PynetemGui" />
+      </element>
+    </root>
+  </artifact>
+</component>
