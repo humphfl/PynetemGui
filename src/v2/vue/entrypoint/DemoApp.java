@@ -89,7 +89,7 @@ public class DemoApp extends Application {
 
         //Création de la scène principale
         Scene scene = new Scene(fp, 900, 400);
-        primaryStage.setTitle("JavaFX ImageView (o7planning.org)");
+        primaryStage.setTitle("Pynetem GUI");
         primaryStage.setScene(scene);
         primaryStage.show();
 

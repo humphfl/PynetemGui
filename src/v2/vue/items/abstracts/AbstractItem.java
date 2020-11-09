@@ -329,6 +329,7 @@ public abstract class AbstractItem extends Parent {
     public void rename(String newName) {
         //TODO : tester
         this.lblName.setText(controller.rename(lblName.getText(), newName));
+
     }
     //******************************************************************************************************************
     //*                          PRIVATE METHODS                                                                       *
@@ -414,6 +415,8 @@ public abstract class AbstractItem extends Parent {
                 }*/
             }
         });
+
+
     }
 
     /**

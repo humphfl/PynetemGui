@@ -3,6 +3,7 @@ package v2.vue.items.menu;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.MapChangeListener;
 import javafx.scene.control.*;
 import v2.vue.items.ConnectionManager;
@@ -57,7 +58,7 @@ public abstract class InterfacesTab {
         return new ArrayList<>(Arrays.asList(addIf, delIf, table));
     }
 
-    public TableColumn getCol(String name){
+    public TableColumn getCol(String name) {
         return columnsMap.get(name);
     }
     //******************************************************************************************************************
@@ -204,25 +205,31 @@ public abstract class InterfacesTab {
 
             //L'interface restera déconnectée si le lien lk est null
             String ret = "Disconnected";
+            StringProperty prop = new SimpleStringProperty(ret);
             if (lk != null) {
-                String  ed;
+                String ed;
 
                 //Récupération du bon nom de l'interface distante (en fonction de sa position start ou stop dans le lien)
-                if (lk.getStart() == host) {
+               /* if (lk.getStart() == host) {
                     //Si le host est en start l'autre est en end => [1]
                     ed = lk.getLabs()[0].getText();
                 } else {
                     //Si le host est en end l'autre est en start => [0]
                     ed = lk.getLabs()[1].getText();
-                }
-                if(lk.getEnd() == host){
+                }*/
+                if (lk.getEnd() == host) {
 
-                    ret = lk.getStart().getLblName().getText() + "." + ed;
+                    //ret = lk.getStart().getLblName().getText() + "." + ed;
+                    lk.getStart().getLblName().textProperty().addListener((observable, oldValue, newValue) ->
+                            prop.setValue(lk.getStart().getLblName().getText() + "." + lk.getLabs()[1].getText()));
+                    prop.setValue(lk.getStart().getLblName().getText() + "." + lk.getLabs()[1].getText());
                 } else {
-                    ret = lk.getEnd().getLblName().getText() + "." + ed;
+                    lk.getStart().getLblName().textProperty().addListener((observable, oldValue, newValue) ->
+                            prop.setValue(lk.getEnd().getLblName().getText() + "." + lk.getLabs()[0].getText()));
+                    prop.setValue(lk.getEnd().getLblName().getText() + "." + lk.getLabs()[0].getText());
                 }
             }
-            return new SimpleStringProperty(ret);
+            return prop;
         });
 
         //Colonne 5 : boutons de connexions
@@ -231,7 +238,7 @@ public abstract class InterfacesTab {
             btnCo.setOnAction(event -> {
                 //System.out.println("selected = " + param.getValue());
                 ConnectionManager manager = ConnectionManager.getInstance();
-                if(!manager.isOnConnect()){
+                if (!manager.isOnConnect()) {
                     //System.out.println("startIf=" + param.getValue());
                     manager.setOnConnect();
                     manager.setStart(host);
@@ -253,7 +260,7 @@ public abstract class InterfacesTab {
         //Colonne 6 : boutons de supression du lien
         clear.setCellValueFactory(param -> {
             Link lk = host.getIfsMap().get(param.getValue());
-            if(lk != null) {
+            if (lk != null) {
                 Button btnCo = new Button("del");
                 btnCo.setOnAction(event -> {
                     //System.out.println("selected = " + param.getValue());
